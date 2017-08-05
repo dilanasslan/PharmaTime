@@ -1,4 +1,5 @@
 package com.example.dilan.pharmatime;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
@@ -54,22 +55,22 @@ public class DatabaseConnector {
         this.database.update("contacts", editPharma, "PharmaName=" + PharmaName, (String[])null);
         this.close();
     }
-/*
-    public Cursor getAllPharma() {
-        return this.database.query("Pharma", new String[]{"_id", "name"}, (String)null, (String[])null, (String)null, (String)null, "name");
-    }
+    /*
+       public Cursor getAllPharma() {
+           return this.database.query("Pharma", new String[]{"_id", "name"}, (String)null, (String[])null, (String)null, (String)null, "name");
+       }
 
-    public Cursor getOneContact(long id) {
-        return this.database.query("contacts", (String[])null, "_id=" + id, (String[])null, (String)null, (String)null, (String)null);
-    }
+           public Cursor getOneContact(long id) {
+               return this.database.query("contacts", (String[])null, "_id=" + id, (String[])null, (String)null, (String)null, (String)null);
+           }
 
-    public void deleteContact(long id) {
-        this.open();
+           public void deleteContact(long id) {
+               this.open();
 
-        this.database.delete("contacts", "_id=" + id, (String[])null);
-        this.close();
-    }
-*/
+               this.database.delete("contacts", "_id=" + id, (String[])null);
+               this.close();
+           }
+       */
     private class DatabaseOpenHelper extends SQLiteOpenHelper {
         public DatabaseOpenHelper(Context context, String name, CursorFactory factory, int version) {
             super(context, name, factory, version);

@@ -1,5 +1,6 @@
 package com.example.dilan.pharmatime;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,12 +20,19 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
+    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -133,13 +141,17 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getContext(),
                             "Click ListItem Number " + position, Toast.LENGTH_LONG)
                             .show();
+                    Intent intent = new Intent(parent.getContext(), PharmaDetailActivity.class);
+                    String message = "Click ListItem Number: " + position;
+                    intent.putExtra(EXTRA_MESSAGE, message);
+                    startActivity(intent);
                 }
             });
             return rootView;
         }
     }
 
-    public static class AddPharmaFragment extends Fragment {
+    public static class AddPharmaFragment extends Fragment  {
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public AddPharmaFragment() {
@@ -159,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
             // Inflate the layout for this fragment
             return inflater.inflate(R.layout.fragment_add_pharma, container, false);
         }
+
     }
 
 
@@ -196,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "PHARMA LIST";
                 case 1:
                     return "ADD PHARMA";
             }

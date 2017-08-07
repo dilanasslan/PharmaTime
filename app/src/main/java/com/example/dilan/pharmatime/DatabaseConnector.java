@@ -53,13 +53,14 @@ public class DatabaseConnector {
         editPharma.put("BeginDate", BeginDate);
         editPharma.put("EndDate", EndDate);
         this.open();
-        this.database.update("contacts", editPharma, "PharmaName=" + PharmaName, (String[])null);
+        this.database.update("Pharma", editPharma, "PharmaName=" + PharmaName, (String[])null);
         this.close();
     }
 
        public Cursor getAllPharma() {
-           return this.database.query("Pharma", null , null, null, null, null, null, "name");
+           return this.database.query("Pharma", new String[]{"_id"}, null, null, null, null, null);
        }
+       /*
 
     
 

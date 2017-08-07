@@ -1,5 +1,6 @@
 package com.example.dilan.pharmatime;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,14 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -148,36 +145,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static class AddPharmaFragment extends Fragment  {
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public AddPharmaFragment() {
-        }
-
-        public static AddPharmaFragment newInstance(int sectionNumber) {
-            AddPharmaFragment fragment = new AddPharmaFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_add_pharma, container, false);
-        }
-
-    }
-
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }

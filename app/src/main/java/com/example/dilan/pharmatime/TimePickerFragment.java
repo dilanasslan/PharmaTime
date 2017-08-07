@@ -2,7 +2,6 @@ package com.example.dilan.pharmatime;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -10,6 +9,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
+
+import static com.example.dilan.pharmatime.AddPharmaFragment.pick_time;
 
 
 public class TimePickerFragment extends DialogFragment
@@ -32,9 +33,7 @@ public class TimePickerFragment extends DialogFragment
                 Toast.makeText(getActivity(),
                         "hour: " + hourOfDay + "min: " + minute , Toast.LENGTH_LONG)
                         .show();
+                pick_time.setText(hourOfDay + ":" + minute);
 
-                FragmentManager fm = getActivity().getFragmentManager();
-                DialogFragment newFragment = new DatePickerFragment();
-                newFragment.show(fm, "datePicker");
         }
 }

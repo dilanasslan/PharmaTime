@@ -9,16 +9,20 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import static com.example.dilan.pharmatime.AddPharmaFragment.DIALOG_FRAGMENT;
+import static com.example.dilan.pharmatime.AddPharmaFragment.pick_date;
+import static com.example.dilan.pharmatime.AddPharmaFragment.pick_date_end;
+
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
-
+    int year,month,day;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
         final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
 
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
@@ -29,5 +33,14 @@ public class DatePickerFragment extends DialogFragment
         Toast.makeText(getActivity(),
                 "year: " + year + " month: " + month + " day: "+ day , Toast.LENGTH_LONG)
                 .show();
+        switch (DIALOG_FRAGMENT){
+            case 0:
+                pick_date_end.setText(day+"/"+month+"/"+year);
+                break;
+            case 1:
+                pick_date.setText(day+"/"+month+"/"+year);
+                break;
+        }
+
     }
 }

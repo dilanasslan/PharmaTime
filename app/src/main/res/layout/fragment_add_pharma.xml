@@ -22,13 +22,6 @@
             android:hint="Pharma Name"
             android:inputType="textPersonName" />
 
-        <Switch
-            android:id="@+id/switch1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Repeat" />
-
         <CheckBox
             android:id="@+id/checkBox1"
             android:layout_width="match_parent"
@@ -45,18 +38,41 @@
             android:hint="Notification Message"
             android:inputType="textPersonName" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/pick_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Pill Begin Date" />
+
+            <Button
+                android:id="@+id/pick_date_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Pill End Date" />
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Repeat" />
+
         <Button
             android:id="@+id/pick_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Pick Time" />
-        <Button
-            android:id="@+id/pick_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Pick Date"/>
 
         <LinearLayout
             android:layout_width="match_parent"

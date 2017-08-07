@@ -62,6 +62,9 @@ public class DatabaseConnector {
        }
        /*
 
+    
+
+/*
            public Cursor getOneContact(long id) {
                return this.database.query("contacts", (String[])null, "_id=" + id, (String[])null, (String)null, (String)null, (String)null);
            }

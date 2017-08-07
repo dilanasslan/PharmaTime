@@ -2,6 +2,7 @@ package com.example.dilan.pharmatime;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
@@ -52,13 +53,14 @@ public class DatabaseConnector {
         editPharma.put("BeginDate", BeginDate);
         editPharma.put("EndDate", EndDate);
         this.open();
-        this.database.update("contacts", editPharma, "PharmaName=" + PharmaName, (String[])null);
+        this.database.update("Pharma", editPharma, "PharmaName=" + PharmaName, (String[])null);
         this.close();
     }
-    /*
+
        public Cursor getAllPharma() {
-           return this.database.query("Pharma", new String[]{"_id", "name"}, (String)null, (String[])null, (String)null, (String)null, "name");
+           return this.database.query("Pharma", new String[]{"_id"}, null, null, null, null, null);
        }
+       /*
 
            public Cursor getOneContact(long id) {
                return this.database.query("contacts", (String[])null, "_id=" + id, (String[])null, (String)null, (String)null, (String)null);

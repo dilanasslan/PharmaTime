@@ -1,28 +1,48 @@
 package com.example.dilan.pharmatime;
 
-import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.app.FragmentManager;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Switch;
-import android.widget.TimePicker;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import static com.example.dilan.pharmatime.MainActivity.mSectionsPagerAdapter;
+import static com.example.dilan.pharmatime.MainActivity.mViewPager;
 
 
 public class AddPharmaFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_SECTION_NUMBER = "section_number";
     public static int DIALOG_FRAGMENT = 1;
+    public static int REPETATION = 0;
+    public static boolean NOTICIATION = false;
+    public static ArrayList<String> PickedTimes = new ArrayList<String>();
     Button btn_add;
     static Button pick_time, pick_date, pick_date_end;
-    EditText editText;
+    EditText pharma_name;
+    public static EditText daily_usage;
     Switch switch1;
+    static ListView listView;
+    static TextView picked_list;
 
     public AddPharmaFragment() {
     }
@@ -40,10 +60,13 @@ public class AddPharmaFragment extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_add_pharma, container, false);
 
-        editText = (EditText) v.findViewById(R.id.editText);
+        listView = (ListView) v.findViewById(R.id.picked_time_list);
+        pharma_name = (EditText) v.findViewById(R.id.pharma_name);
+        daily_usage = (EditText) v.findViewById(R.id.daily_usage);
         btn_add = (Button)v.findViewById(R.id.button);
-        switch1 = (Switch)v.findViewById(R.id.switch1);
+        switch1 = (Switch)v.findViewById(R.id.send_notification);
         pick_time = (Button)v.findViewById(R.id.pick_time);
+        picked_list = (TextView) v.findViewById(R.id.picked_list);
         pick_date = (Button)v.findViewById(R.id.pick_date);
         pick_date_end = (Button)v.findViewById(R.id.pick_date_end);
 
@@ -59,17 +82,42 @@ public class AddPharmaFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.button){//add pharma
-            String message = editText.getText().toString();
-            DatabaseConnector db = new DatabaseConnector(getContext());
-            db.insertContact(message, "123", 12, "123","123");
-            Toast.makeText(getActivity(),
-                    "Pharma Added!" , Toast.LENGTH_LONG)
-                    .show();
+            String begin_date = pick_date.getText().toString();
+            String end_date = pick_date_end.getText().toString();
+            String name = pharma_name.getText().toString();
+            String usage = daily_usage.getText().toString();
 
-        } else if (v.getId() == R.id.pick_time) {
-            FragmentManager fm = getActivity().getFragmentManager();
-            DialogFragment newFragment = new TimePickerFragment();
-            newFragment.show(fm, "timePicker");
+            if(!nullControl(name, usage, begin_date, end_date)){
+                Toast.makeText(getActivity(),"Please fill blank areas!" , Toast.LENGTH_LONG).show();
+            }else{
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                Date convertedBeginDate = new Date();
+                Date convertedEndDate = new Date();
+                try {
+                    convertedBeginDate = dateFormat.parse(begin_date);
+                    convertedEndDate = dateFormat.parse(end_date);
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                DatabaseConnector db = new DatabaseConnector(getContext());
+                db.insertContact(name, null, Integer.parseInt(usage), convertedBeginDate,convertedEndDate);
+                //TODO time will be added
+
+                Toast.makeText(getActivity(),"Pharma Added!" , Toast.LENGTH_LONG).show();
+            }
+        }else if (v.getId() == R.id.pick_time) {
+            String dailyUsage = daily_usage.getText().toString();
+            if(dailyUsage.equals("")){
+                Toast.makeText(getActivity(),"Please first enter number of daily usage!" , Toast.LENGTH_LONG).show();
+            }
+            else{
+                REPETATION = Integer.parseInt(daily_usage.getText().toString());
+                FragmentManager fm = getActivity().getFragmentManager();
+                DialogFragment newFragment = new TimePickerFragment();
+                newFragment.show(fm, "timePicker");
+            }
         }else if (v.getId() == R.id.pick_date) {
             DIALOG_FRAGMENT = 1;
             FragmentManager fm = getActivity().getFragmentManager();
@@ -80,12 +128,19 @@ public class AddPharmaFragment extends Fragment implements View.OnClickListener 
             FragmentManager fm = getActivity().getFragmentManager();
             DialogFragment newFragment = new DatePickerFragment();
             newFragment.show(fm, "datePicker");
-        }else if (v.getId() == R.id.switch1) {
-            FragmentManager fm = getActivity().getFragmentManager();
-            DialogFragment newFragment = new RepeatDialogFragment();
-            newFragment.show(fm, "repeat");
+        }else if (v.getId() == R.id.send_notification) {
+            if(((Switch) v).isChecked())
+                NOTICIATION = true;
+            else
+                NOTICIATION = false;
         }
 
+    }
+    private boolean nullControl(String name, String usage, String begin_date, String end_date){
+        if(name.equals("") || usage.equals("") || begin_date.equals("Begin Date") || end_date.equals("End Date") || PickedTimes.size() == 0)
+            return false;
+        else
+            return true;
     }
 
 }

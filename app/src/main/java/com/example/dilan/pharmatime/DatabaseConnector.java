@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by dilan on 05/08/2017.
  */
@@ -32,13 +35,15 @@ public class DatabaseConnector {
 
     }
 
-    public void insertContact(String PharmaName, String Barcode, int NumberOfDailyUsing, String BeginDate, String EndDate) {
+    public void insertContact(String PharmaName, String Barcode, int NumberOfDailyUsing, Date BeginDate, Date EndDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
         ContentValues newPharma = new ContentValues();
         newPharma.put("PharmaName", PharmaName);
         newPharma.put("Barcode", Barcode);
         newPharma.put("NumberOfDailyUsing", NumberOfDailyUsing);
-        newPharma.put("BeginDate", BeginDate);
-        newPharma.put("EndDate", EndDate);
+        newPharma.put("BeginDate", dateFormat.format(BeginDate));
+        newPharma.put("EndDate", dateFormat.format(EndDate));
         this.open();
         this.database.insert("Pharma", (String)null, newPharma);
         this.close();

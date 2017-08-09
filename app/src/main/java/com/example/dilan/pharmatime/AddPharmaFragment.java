@@ -1,19 +1,16 @@
 package com.example.dilan.pharmatime;
 
 import android.app.DialogFragment;
-import android.app.FragmentTransaction;
-import android.content.DialogInterface;
+import android.app.FragmentManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.TextViewCompat;
+import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -25,9 +22,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import static com.example.dilan.pharmatime.MainActivity.mSectionsPagerAdapter;
-import static com.example.dilan.pharmatime.MainActivity.mViewPager;
 
 
 public class AddPharmaFragment extends Fragment implements View.OnClickListener {
@@ -134,13 +128,36 @@ public class AddPharmaFragment extends Fragment implements View.OnClickListener 
             else
                 NOTICIATION = false;
         }
-
+        sendNotification();
     }
+    private void  sendNotification(){
+        if(NOTICIATION ){
+            addNotification();
+        }
+    }
+
+
     private boolean nullControl(String name, String usage, String begin_date, String end_date){
         if(name.equals("") || usage.equals("") || begin_date.equals("Begin Date") || end_date.equals("End Date") || PickedTimes.size() == 0)
             return false;
         else
             return true;
+    }
+    protected void addNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity());
+        builder.setSmallIcon(R.mipmap.notification_img);
+        builder.setContentTitle("Pharma Time ");
+        builder.setContentText("Time to take your medicine!");
+
+
+        Intent notificationIntent = new Intent(getActivity(), MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(getActivity(), 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // Add as notification
+        NotificationManager manager = (NotificationManager)getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
+        manager.notify(0, builder.build());
     }
 
 }

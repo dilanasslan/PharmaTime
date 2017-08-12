@@ -8,9 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by dilan on 05/08/2017.
- */
 
 public class DatabaseConnector {
     private static final String DATABASE_NAME = "PharmaTimeDb";

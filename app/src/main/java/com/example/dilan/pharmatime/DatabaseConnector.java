@@ -8,16 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by dilan on 05/08/2017.
  */
 
 public class DatabaseConnector {
     private static final String DATABASE_NAME = "PharmaTimeDb";
-    private SQLiteDatabase database;
+    SQLiteDatabase database;
     private DatabaseConnector.DatabaseOpenHelper databaseOpenHelper;
 
     public DatabaseConnector(Context context) {
@@ -35,19 +32,23 @@ public class DatabaseConnector {
 
     }
 
-    public void insertContact(String PharmaName, String Barcode, int NumberOfDailyUsing, Date BeginDate, Date EndDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
+    public void insertPharma(String PharmaName, String Barcode, int NumberOfDailyUsing, String BeginDate, String EndDate) {
         ContentValues newPharma = new ContentValues();
         newPharma.put("PharmaName", PharmaName);
         newPharma.put("Barcode", Barcode);
         newPharma.put("NumberOfDailyUsing", NumberOfDailyUsing);
-        newPharma.put("BeginDate", dateFormat.format(BeginDate));
-        newPharma.put("EndDate", dateFormat.format(EndDate));
+        newPharma.put("BeginDate", BeginDate);
+        newPharma.put("EndDate", EndDate);
         this.open();
         this.database.insert("Pharma", (String)null, newPharma);
-        this.close();
+
     }
+
+    public Cursor getAllPharma() {
+        return this.database.query("Pharma", new String[]{"id", "PharmaName", "Barcode", "NumberOfDailyUsing","BeginDate","EndDate"}, null, null,  null, null, null);
+        //this.database.rawQuery("SELECT * FROM Pharma", null);
+    }
+
 
 
     public void updatePharma(String PharmaName, String Barcode, int NumberOfDailyUsing, String BeginDate, String EndDate) {
@@ -59,15 +60,9 @@ public class DatabaseConnector {
         editPharma.put("EndDate", EndDate);
         this.open();
         this.database.update("Pharma", editPharma, "PharmaName=" + PharmaName, (String[])null);
-        this.close();
+
     }
 
-       public Cursor getAllPharma() {
-           return this.database.query("Pharma", new String[]{"_id"}, null, null, null, null, null);
-       }
-       /*
-
-    
 
 /*
            public Cursor getOneContact(long id) {

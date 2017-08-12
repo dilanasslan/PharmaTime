@@ -1,7 +1,7 @@
 package com.example.dilan.pharmatime;
 
-import android.app.DialogFragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,14 +19,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
+    static String[] listArray;
+    static Cursor c;
+    static int arraySize = 0 ;
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -119,12 +120,21 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            DatabaseConnector dc = new DatabaseConnector(getContext());
+            dc.open();
+
+            dc.insertPharma("dolorex" , "156983541", 2, "08/07/2017", "08/10/2017");
+            dc.insertPharma("famoser" , "123456790", 3, "08/09/2017", "23/12/2017");
+
+            c = dc.getAllPharma();
+            showAllPharma(c,rootView);
+            dc.close();
 
             String[] AndroidOS = new String[]{"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice Cream SandWich", "Jelly Bean", "KitKat"};
             ListView listView = (ListView) rootView.findViewById(R.id.list);
 
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                    getActivity(), android.R.layout.simple_selectable_list_item, AndroidOS
+                    getActivity(), android.R.layout.simple_selectable_list_item, listArray
             );
             listView.setAdapter(arrayAdapter);
 
@@ -143,7 +153,47 @@ public class MainActivity extends AppCompatActivity {
             });
             return rootView;
         }
+
+
+        public void showAllPharma(Cursor cursor, View rootView) {
+            listArray = new String[2];
+            int arrayIndex = 0;
+
+            while(cursor.moveToNext() ){
+                StringBuilder builder = new StringBuilder();
+                long id = cursor.getLong(cursor.getColumnIndex("id"));
+                String PharmaName = cursor.getString(cursor.getColumnIndex("PharmaName"));
+                String Barcode = cursor.getString((cursor.getColumnIndex("Barcode")));
+                String BeginDate = cursor.getString((cursor.getColumnIndex("BeginDate")));
+                String EndDate = cursor.getString((cursor.getColumnIndex("EndDate")));
+                int NumberOfDailyUsing = cursor.getInt(cursor.getColumnIndex("NumberOfDailyUsing"));
+
+                // builder.append("id: ").append(id);
+                // builder.append("\n");
+                builder.append("PharmaName: ").append(PharmaName);
+                builder.append("\n");
+                //  builder.append("BeginDate: ").append(BeginDate);
+                // builder.append("  EndDate: ").append(EndDate);
+                //   builder.append("\n");
+                builder.append("NumberOfDailyUsing: ").append(NumberOfDailyUsing);
+
+
+                if(builder.toString() != ""){
+                    listArray[arrayIndex] = builder.toString();
+                    if(arrayIndex <2){
+                        arrayIndex++;
+                    }else{
+                        continue;
+                    }
+                }else{
+                    continue;
+                }
+            }
+        }
+
     }
+
+
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -163,6 +213,9 @@ public class MainActivity extends AppCompatActivity {
                     return null;
             }
         }
+
+
+
 
         @Override
         public int getCount() {

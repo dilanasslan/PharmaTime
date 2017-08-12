@@ -96,7 +96,7 @@ public class AddPharmaFragment extends Fragment implements View.OnClickListener 
                 }
 
                 DatabaseConnector db = new DatabaseConnector(getContext());
-                db.insertContact(name, null, Integer.parseInt(usage), convertedBeginDate,convertedEndDate);
+           //     db.insertContact(name, null, Integer.parseInt(usage), convertedBeginDate,convertedEndDate);
                 //TODO time will be added
 
                 Toast.makeText(getActivity(),"Pharma Added!" , Toast.LENGTH_LONG).show();
